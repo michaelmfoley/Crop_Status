@@ -44,8 +44,13 @@ def create_dashboard(inventory_json_path, summary_csv_path, country_mapping_file
         # Simple fallback
         country_mapping = {code: f"Country {code}" for code in summary_df['country_code'].unique()}
     
-    # Check if country mapping is available
-    country_names = pd.read_csv('/Users/michaelfoley/Library/CloudStorage/GoogleDrive-mfoley@g.harvard.edu/My Drive/Subnational_Yield_Database/helper_files/country_codes_with_iso3.csv')
+    # Get the directory where dashboard.py is located (crop_inventory folder)
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    # Go up one level to the project root, then into the data folder
+    data_dir = os.path.join(os.path.dirname(current_dir), "data")
+    country_code_path = os.path.join(data_dir, "country_codes_with_iso3.csv")
+    country_names = pd.read_csv(country_code_path)
     
     # Add country names to summary dataframe
     summary_df['country_name'] = summary_df['country_code'].map(
